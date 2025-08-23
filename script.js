@@ -1,58 +1,70 @@
-const params = new URLSearchParams(window.location.search);
-const lang = params.get("lang") || "en";
+document.addEventListener("DOMContentLoaded", () => {
+  const planItems = document.querySelectorAll(".plan");
 
-const availableLangs = ["en", "ru", "de", "es", "fr", "pt", "ja"];
-const selectedLang = availableLangs.includes(lang) ? lang : "en";
-
-fetch(`./lang/${selectedLang}.json`)
-  .then((res) => res.json())
-  .then((t) => {
-    document.getElementById("title").innerHTML = t["Get Unlimited <br>Access"] || '';
-    document.getElementById("feature-1").innerHTML = t["Unlimited Art <br>Creation"] || '';
-    document.getElementById("feature-2").innerHTML = t["Exclusive <br>Styles"] || '';
-    document.getElementById("feature-3").innerHTML = t["Magic Avatars <br>With 20% Off"] || '';
-    document.getElementById("continue-btn").innerHTML = t["Continue"] || '';
-    document.getElementById("restore").innerHTML = t["Restore"] || '';
-    document.getElementById("terms").innerHTML = t["Terms of Use"] || '';
-    document.getElementById("privacy").innerHTML = t["Privacy Policy"] || '';
-
-    const yearlyPrice = "$39.99";
-    const weeklyPrice = "$6.99";
-    const yearlySubPrice = "$0.48";
-
-    document.getElementById("yearly-label").textContent = t["YEARLY ACCESS"];
-    document.getElementById("yearly-fullprice").textContent =
-      t["Just {{price}} per year"].replace("{{price}}", yearlyPrice);
-    document.getElementById("yearly-subprice").innerHTML =
-  t["{{price}} <br>per week"].replace("{{price}}", yearlySubPrice);
-
-    document.getElementById("weekly-label").textContent = t["WEEKLY ACCESS"];
-    document.getElementById("weekly-price").innerHTML =
-      t["{{price}} <br>per week"].replace("{{price}}", weeklyPrice);
-
-    const tag = document.getElementById("yearly-tag");
-    if (t["BEST OFFER"]) {
-      tag.textContent = t["BEST OFFER"];
-      tag.style.display = "block";
-    } else {
-      tag.style.display = "none";
-    }
-  })
-  .catch((err) => {
-    console.error("Ошибка загрузки языка:", err);
+  planItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      if (item.classList.contains("active")) return;
+      planItems.forEach((p) => p.classList.remove("active"));
+      item.classList.add("active");
+    });
   });
 
-// Выбор активного тарифа
-const yearly = document.getElementById("yearly-plan");
-const weekly = document.getElementById("weekly-plan");
-
-yearly.addEventListener("click", () => {
-  yearly.classList.add("active");
-  weekly.classList.remove("active");
+  const lang = getLanguage();
+  document.documentElement.lang = lang;
+  document.body.classList.add(`lang-${lang}`);
+  applyTranslations();
 });
 
-weekly.addEventListener("click", () => {
-  weekly.classList.add("active");
-  yearly.classList.remove("active");
-});
+function getLanguage() {
+  const params = new URLSearchParams(window.location.search);
+  const langParam = (params.get("lang") || "").toLowerCase();
+  const browserLang = (navigator.language || "en").slice(0, 2).toLowerCase();
+  const supportedLanguages = ["de", "en", "es", "fr", "ja", "pt"];
 
+  if (langParam && supportedLanguages.includes(langParam)) {
+    return langParam;
+  }
+  return supportedLanguages.includes(browserLang) ? browserLang : "en";
+}
+
+async function loadTranslations(lang) {
+  try {
+    const response = await fetch(`./lang/${lang}.json`, { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error("Не удалось загрузить файл перевода");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    if (lang !== "en") return loadTranslations("en");
+    return null;
+  }
+}
+
+async function applyTranslations() {
+  const lang = getLanguage();
+  const translations = await loadTranslations(lang);
+
+  const prices = {
+    weekly: "$3.99",
+    yearly: "$39.99",
+  };
+
+  if (!translations) return;
+
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    const key = element.getAttribute("data-i18n");
+    let text = translations[key];
+
+    // если перевода нет, оставляем исходный текст элемента
+    if (!text) text = element.innerHTML;
+
+    if (key.toLowerCase().includes("year")) {
+      text = text.replaceAll("{{price}}", prices.yearly);
+    } else if (key.toLowerCase().includes("week")) {
+      text = text.replaceAll("{{price}}", prices.weekly);
+    }
+
+    element.innerHTML = text;
+  });
+}

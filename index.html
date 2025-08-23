@@ -1,67 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Landing</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <main>
-    <div class="content">
-      <a href="#" class="close-btn" aria-label="Close">
-          <img src="assets/cross.svg" alt="Close" />
-      </a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Aiby-test</title>
+  </head>
+  <body>
+    <div class="banner">
+      <div class="banner__container">
 
-      <h1 id="title">Get Unlimited Access</h1>
+        <a href="#" class="banner__close">
+          <img src="./assets/cross.svg" class="banner__close-img" alt="" />
+        </a>
 
-      <div class="features">
-        <div class="feature-card">
-          <img src="assets/UnlimArt.png" alt="Unlimited Art Creation" />
-          <p id="feature-1">Unlimited Art Creation</p>
-        </div>
-        <div class="feature-card">
-          <img src="assets/ExclusiveStyles.png" alt="Exclusive Styles" />
-          <p id="feature-2">Exclusive Styles</p>
-        </div>
-        <div class="feature-card">
-          <img src="assets/MagicAvatars.png" alt="Magic Avatars" />
-          <p id="feature-3">Magic Avatars With 20% Off</p>
-        </div>
-      </div>
+        <h1 class="banner__title" data-i18n="Get Unlimited <br>Access">
+          Get Unlimited <br />Access
+        </h1>
 
-      <div class="plans">
-        <div class="plan yearly" id="yearly-plan">
-          <div class="left">
-            <div class="label" id="yearly-label">YEARLY ACCESS</div>
-           <div class="price" id="yearly-fullprice">Just $39.99 per year</div>
+        <div class="features">
+          <div class="feature-card feature-card--unlim">
+            <p class="feature-card__text" data-i18n="Unlimited Art <br>Creation">
+              Unlimited Art <br />Creation
+            </p>
           </div>
-          <div class="right">
-            <div class="right-price" id="yearly-subprice"></div>
-         </div>
-        </div>
 
-       <div class="plan weekly active" id="weekly-plan">
-          <div class="left">
-           <div class="label" id="weekly-label">WEEKLY ACCESS</div>
-         </div>
-          <div class="right">
-            <div class="right-price" id="weekly-price">$6.99</div>
+          <div class="feature-card feature-card--styles">
+            <p class="feature-card__text" data-i18n="Exclusive <br>Styles">
+              Exclusive <br />Styles
+            </p>
+          </div>
+
+          <div class="feature-card feature-card--avatars">
+            <p class="feature-card__text" data-i18n="Magic Avatars <br>With 20% Off">
+              Magic Avatars <br />With 20% Off
+            </p>
           </div>
         </div>
-      </div>
 
-      <button id="continue-btn">Continue</button>
+        <div class="plans">
+          <div class="plan plan--yearly">
+            <div class="plan__decor">
+              <img
+                src="./assets/left-Path.png"
+                class="plan__decor-left"
+                alt=""
+              />
+              <div class="plan__badge" data-i18n="BEST OFFER">
+                BEST OFFER
+              </div>
+            </div>
 
-      <div class="toolbar">
-        <a id="terms" href="https://apple.com">Terms of Use</a>
-        <a id="privacy" href="https://google.com">Privacy Policy</a>
-        <a id="restore" href="#">Restore</a>
+            <img
+              src="./assets/right-Path.png"
+              class="plan__decor-right"
+              alt=""
+            />
+
+            <div class="plan__grid">
+              <div class="plan__col">
+                <p class="plan__name" data-i18n="YEARLY ACCESS">
+                  YEARLY ACCESS
+                </p>
+                <p class="plan__hint" data-i18n="Just {{price}} per year">
+                  Just $39.99 per year
+                </p>
+              </div>
+              <div class="plan__col plan__col--right">
+                <p class="plan__hint" data-i18n="{{price}} <br> per week">
+                  {{price}} <br />per week
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="plan plan--weekly active">
+            <div class="plan__grid">
+              <div class="plan__col">
+                <p class="plan__name" data-i18n="WEEKLY ACCESS">
+                  WEEKLY ACCESS
+                </p>
+              </div>
+              <div class="plan__col plan__col--right">
+                <p class="plan__hint" data-i18n="{{price}} <br> per week">
+                  {{price}} <br />per week
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a href="#" class="banner__cta" data-i18n="Continue">Continue</a>
+
+        <div class="legal">
+          <a
+            href="https://apple.com/"
+            class="legal__link"
+            data-i18n="Terms of Use"
+          >
+            Terms of Use
+          </a>
+          <a
+            href="https://google.com/"
+            class="legal__link"
+            data-i18n="Privacy Policy"
+          >
+            Privacy Policy
+          </a>
+          <a href="#" class="legal__link" data-i18n="Restore">
+            Restore
+          </a>
+        </div>
       </div>
     </div>
-  </main>
 
-  <script src="script.js"></script>
-</body>
+    <script src="./script.js" defer></script>
+  </body>
 </html>
