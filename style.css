@@ -42,12 +42,12 @@ body {
 }
 
 .banner__title {
-  color: #fff;
+  color: #ffffff;
   text-align: center;
   text-shadow: 0px 0px 48px rgba(4, 3, 26, 0.83);
   font-weight: 860;
   font-size: 42px;
-  line-height: 109.524%;
+  line-height: 46px;
 }
 
 /*Features*/
@@ -74,10 +74,10 @@ body {
 
 .feature-card__text {
   height: fit-content;
-  color: #fff;
+  color: #ffffff;
   font-size: 12px;
   font-weight: 400;
-  line-height: normal;
+  line-height: 100%;
   width: 100%;
 }
 
@@ -141,7 +141,7 @@ body {
     linear-gradient(90deg, #FF96F4, #632AF7, #00B5FF) border-box;
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.5);
   height: 20px;
-  padding: 0 22px;
+  padding: 0 17.35px;
   color: #fff;
   text-align: center;
   font-size: 13px;
@@ -173,7 +173,7 @@ body {
   font-weight: 400;
   line-height: normal;
   opacity: 0.7;
-  text-align: right;
+  text-align: left;
 }
 .plan__name { 
   color: #fff;
@@ -254,6 +254,7 @@ body {
 @media (max-height: 740px) {
   .banner { background-position: center -60px; }
   .banner__title { font-size: 36px; }
+  .features { gap: 4px; }
   .feature-card { min-height: 126px; }
   .plan__grid { grid-template-columns: 171px 1fr; }
 }
