@@ -46,25 +46,47 @@ async function applyTranslations() {
   const translations = await loadTranslations(lang);
 
   const prices = {
-    weekly: "$3.99",
-    yearly: "$39.99",
+    weekly: 6.99,     
+    yearly: 39.99,    
+    currency: "USD",
   };
 
   if (!translations) return;
 
-  document.querySelectorAll("[data-i18n]").forEach((element) => {
-    const key = element.getAttribute("data-i18n");
-    let text = translations[key];
+  const fmt = new Intl.NumberFormat(
+    lang === "de" ? "de-DE" : "en-US",   
+    { style: "currency", currency: prices.currency, minimumFractionDigits: 2, maximumFractionDigits: 2 }
+  );
 
-    // если перевода нет, оставляем исходный текст элемента
-    if (!text) text = element.innerHTML;
+  // helper
+  const money = (n) => fmt.format(n);
 
-    if (key.toLowerCase().includes("year")) {
-      text = text.replaceAll("{{price}}", prices.yearly);
-    } else if (key.toLowerCase().includes("week")) {
-      text = text.replaceAll("{{price}}", prices.weekly);
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    let text = translations[key] ?? el.innerHTML;
+
+    const isYearKey = /year/i.test(key);
+    const isWeekKey = /week/i.test(key);
+
+    if (isYearKey) {
+      text = text.replaceAll("{{price}}", money(prices.yearly));
     }
 
-    element.innerHTML = text;
+    if (isWeekKey) {
+      const inYearlyPlan  = el.closest(".plan")?.classList.contains("plan--yearly");
+      const inWeeklyPlan  = el.closest(".plan")?.classList.contains("plan--weekly");
+
+      if (inYearlyPlan) {
+        const weeklyFromYearly = prices.yearly / 52;
+        text = text.replaceAll("{{price}}", money(weeklyFromYearly));
+      } else if (inWeeklyPlan) {
+        text = text.replaceAll("{{price}}", money(prices.weekly));
+      } else {
+        text = text.replaceAll("{{price}}", money(prices.weekly));
+      }
+    }
+
+    if (text.includes("<br")) el.innerHTML = text;
+    else el.textContent = text;
   });
 }
